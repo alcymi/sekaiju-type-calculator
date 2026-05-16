@@ -2,3 +2,6 @@
 dfghkjldfgshjklfghd
 
 dopwndload release,,, then inside of "sekaiju type calcy" is the .exe,,,,
+
+type.py is terminal based calc,,,,
+supatest.py is tkinter based calc used for the .exe,,,,
