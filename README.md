@@ -14,6 +14,8 @@ if you find any problems or have any suggestions please make an issue on here so
 
 <img width="492" height="660" alt="Screenshot 2026-05-18 211857" src="https://github.com/user-attachments/assets/03407736-95a7-415d-82c9-0e4a4c63be24" />
 
+(font does not come with it, sorry !)
+
 ## Download
 
 from github releases [release v1.0f](https://github.com/alchym/sekaiju-type-calculator/releases/tag/v1.0f)
