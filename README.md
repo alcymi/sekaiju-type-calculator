@@ -12,6 +12,7 @@ if you find any problems or have any suggestions please make an issue on here so
 ***DO NOT MOVE THE .exe AWAY FROM CYGGY !!!! IT NEEDS ITS COMFORT CYGGY !!!!!!!!!!!!!!***
 
 
+<img width="492" height="660" alt="Screenshot 2026-05-18 211857" src="https://github.com/user-attachments/assets/03407736-95a7-415d-82c9-0e4a4c63be24" />
 
 ## Download
 
