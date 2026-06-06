@@ -12,7 +12,8 @@ if you find any problems or have any suggestions please make an issue on here so
 
 github file limit too small so here is the google drive link
 
-#  [google drive download !](https://drive.google.com/file/d/1qzfO-B8wnzC39_69l3wftz5w25Cn_coC/view?usp=sharing)
+#  [google drive download !](https://drive.google.com/file/d/114t4y4D0iWcNsgKlh2eOZLEIscLLo4tJ/view?usp=sharing)
 
-<img width="451" height="555" alt="image" src="https://github.com/user-attachments/assets/7a75001c-ccb9-431b-bf03-3613090a2893" />
+<img width="453" height="559" alt="image" src="https://github.com/user-attachments/assets/b4bb1207-f257-4a35-8c6d-342178b3cdbf" />
+
 
