@@ -283,11 +283,21 @@ def update():
         AstralButton.configure(fg="#fffeeb")
         CombatButton.configure(fg="#fffeeb")
 
+    setting_saver()
+
     chart.config(state="normal")
     chart.delete("1.0", "end")
     typeNamer()
     chartPrinter(returnee)
     chart.config(state="disabled")
+
+
+def hotkey_setter(new_key):
+    global hotkey
+    try: keyboard.remove_hotkey(hotkey)
+    except KeyError: pass
+    hotkey = new_key
+    keyboard.add_hotkey(hotkey, toggle_clicking)
 
 def update_hotkey():
     """Opens a new window to set the hotkey."""
@@ -296,9 +306,8 @@ def update_hotkey():
         global hotkey
         new_key = hotkey_entry.get().strip().lower()
         if new_key:
-            keyboard.remove_hotkey(hotkey)
-            hotkey = new_key
-            keyboard.add_hotkey(hotkey, toggle_clicking)
+            hotkey_setter(new_key)
+            setting_saver()
             hotkey_window.destroy()
 
     hotkey_window = tk.Toplevel(window)
@@ -359,9 +368,7 @@ window.resizable(False,False)
 
 content = ""
 with open('font.txt') as f:
-    contents = f.read()
-contents.strip()
-f.close()
+    contents = f.read().strip()
 
 fonty = tk.font.Font(family=contents,size=12)
 sonty = tk.font.Font(family=contents,size=12)
@@ -371,61 +378,33 @@ fonts = list(font.families())
 BANNEDFONTS = ["Cambria Math","Gabriola"]
 fonts = [f for f in fonts if f not in BANNEDFONTS]
 
-for f in fonts:
-    f.replace(" ","")
-
 option = tk.StringVar(value=contents)
 soption = tk.StringVar(value=contents)
 
 def font_change():
     global fonty
     selected = option.get()
-    fonty = tk.font.Font(family=selected,size=12)
+    fonty = tk.font.Font(family=selected, size=12)
     chart.configure(font=fonty)
 
-    NeutralButton['font'] = fonty
-    PyroButton['font'] = fonty
-    AquaButton['font'] = fonty
-    FloraButton['font'] = fonty
-    ShockButton['font'] = fonty
-    FrostButton['font'] = fonty
-    EarthButton['font'] = fonty
-    ToxicButton['font'] = fonty
-    InsectButton['font'] = fonty
-    SkyButton['font'] = fonty
-    MetalButton['font'] = fonty
-    LightButton['font'] = fonty
-    DarkButton['font'] = fonty
-    AstralButton['font'] = fonty
-    MagicButton['font'] = fonty
-    MythicButton['font'] = fonty
-    CombatButton['font'] = fonty
-    LostButton['font'] = fonty
-    SoundButton['font'] = fonty
-    SweetButton['font'] = fonty
-    VoidButton['font'] = fonty
-    DrownedButton['font'] = fonty
-    ZeroButton['font'] = fonty
-    InfernoButton['font'] = fonty
-    EternalButton['font'] = fonty
-    DivineButton['font'] = fonty
-    stupidButton['font'] = fonty
-    SlamButton['font'] = fonty
-    JamButton['font'] = fonty
-    FishingButton['font'] = fonty
+    for btn in [NeutralButton, PyroButton, AquaButton, FloraButton, ShockButton,
+                FrostButton, EarthButton, ToxicButton, InsectButton, SkyButton,
+                MetalButton, LightButton, DarkButton, AstralButton, MagicButton,
+                MythicButton, CombatButton, LostButton, SoundButton, SweetButton,
+                VoidButton, DrownedButton, ZeroButton, InfernoButton, EternalButton,
+                DivineButton, stupidButton, SlamButton, JamButton, FishingButton]:
+        btn['font'] = fonty
 
     resetButton['font'] = fonty
-    positionButton['font'] = fonty
-    sortButton['font'] = fonty
-    ezreadButton['font'] = fonty
-    autoClickerButton['font'] = fonty
     shinyButton['font'] = fonty
     optionsButton['font'] = fonty
-    basicButton['font'] = fonty
-    secretsButton['font'] = fonty
-    jokesButton['font'] = fonty
 
-    # update()
+    for btn_name in ['positionButton', 'sortButton', 'ezreadButton',
+                     'basicButton', 'secretsButton', 'jokesButton', 'autoClickerButton']:
+        btn = globals().get(btn_name)
+        if btn is not None:
+            try: btn['font'] = fonty
+            except tk.TclError: pass
 
 def shiny_font_change():
     global sonty
@@ -582,30 +561,18 @@ def open_options():
     optionFrame.grid(row=0,column=0)
 
     global ezreadButton
-    global ezreadBool
-    if ezreadBool.get() != False:
-        ezreadBool = tk.BooleanVar(value=True)
     ezreadButton = tk.Checkbutton(optionFrame,text="EZRead",variable=ezreadBool,command=update,font=fonty,width=15)
     ezreadButton.grid(row=0,column=0,padx=20,pady=3)
 
     global jokesButton
-    global jokesBool
-    if jokesBool.get() != False:
-        jokesBool = tk.BooleanVar(value=True)
     jokesButton = tk.Checkbutton(optionFrame,text="Joke Types",variable=jokesBool,command=update,font=fonty,width=15)
     jokesButton.grid(row=3,column=0,padx=20,pady=3)
 
     global secretsButton
-    global secretsBool
-    if secretsBool.get() != False:
-        secretsBool = tk.BooleanVar(value=True)
     secretsButton = tk.Checkbutton(optionFrame,text="Secret Types",variable=secretsBool,command=update,font=fonty,width=15)
     secretsButton.grid(row=2,column=0,padx=20,pady=3)
 
     global basicButton
-    global basicBool
-    if basicBool.get() != False:
-        basicBool = tk.BooleanVar(value=True)
     basicButton = tk.Checkbutton(optionFrame,text="Basic Types",variable=basicBool,command=update,font=fonty,width=15)
     basicButton.grid(row=1,column=0,padx=20,pady=3)
 
@@ -614,16 +581,10 @@ def open_options():
     autoClickerButton.grid(row=4,column=0,padx=20,pady=3)
 
     global sortBool
-    global sortButton
-    if sortBool.get() != False:
-        sortBool = tk.BooleanVar(value=True)
     sortButton = tk.Checkbutton(optionFrame,text="Sort",variable=sortBool,command=update,font=fonty,width=5)
     sortButton.grid(row=5,column=0,padx=20,pady=3)
 
     global positionBool
-    global positionButton
-    if positionBool.get() != False:
-        positionBool = tk.BooleanVar(value=True)
     positionButton = tk.Checkbutton(optionFrame,text="Vert.",variable=positionBool,command=update,font=fonty,width=5)
     positionButton.grid(row=6,column=0,padx=20,pady=3)
 
@@ -731,37 +692,40 @@ def king_von_button_toggle():
 
 def setting_saver():
     with open('.\\CYGGY\\settings.txt','w') as f:
-        f.print("Position ")
-        if positionBool: f.print("True\n")
-        else: f.print("False\n")
+        f.write("Position ")
+        if positionBool.get(): f.write("True\n")
+        else: f.write("False\n")
 
-        f.print("Sorted ")
-        if sortBool: f.print("True\n")
-        else: f.print("False\n")
+        f.write("Sort ")
+        if sortBool.get(): f.write("True\n")
+        else: f.write("False\n")
 
-        f.print("EZread ")
-        if ezreadBool: f.print("True\n")
-        else: f.print("False\n")
+        f.write("EZread ")
+        if ezreadBool.get(): f.write("True\n")
+        else: f.write("False\n")
 
-        f.print("Jokes ")
-        if jokesBool: f.print("True\n")
-        else: f.print("False\n")
+        f.write("Jokes ")
+        if jokesBool.get(): f.write("True\n")
+        else: f.write("False\n")
 
-        f.print("Secret ")
-        if secretsBool: f.print("True\n")
-        else: f.print("False\n")
+        f.write("Secret ")
+        if secretsBool.get(): f.write("True\n")
+        else: f.write("False\n")
 
-        f.print("Basic ")
-        if basicBool: f.print("True\n")
-        else: f.print("False\n")
-    f.close()
+        f.write("Basic ")
+        if basicBool.get(): f.write("True\n")
+        else: f.write("False\n")
 
-def setting_getter():
+        f.write(f"ACHotkey {hotkey}\n")
+
+def setting_getter(setting):
+    settingFull = ""
     with open('.\\CYGGY\\settings.txt') as f:
-        
-
-
-keyboard.add_hotkey(hotkey, toggle_clicking)
+        settingArray = f.read().split()
+    spot = settingArray.index(setting)
+    if setting == "ACHotkey":
+        return settingArray[spot + 1]
+    return settingArray[spot + 1] == "True"
 
 window.iconbitmap("./CYGGY/Cygnet.ico")
 
@@ -847,25 +811,22 @@ resetButton.grid(row=10,column=2)
 optionsButton = tk.Button(buttonFrame,text="Options",command=open_options,font=fonty,width=8)
 optionsButton.grid(row=10,column=1)
 
-savedPositionBool = True
-savedSortBool = True
-savedEZreadBool = True
-savedJokesBool = True
-savedSecretsBool = True
-savedBasicBool = True
+savedPositionBool = setting_getter("Position")
+savedSortBool = setting_getter("Sort")
+savedEZreadBool = setting_getter("EZread")
+savedJokesBool = setting_getter("Jokes")
+savedSecretsBool = setting_getter("Secret")
+savedBasicBool = setting_getter("Basic")
+hotkey_setter(setting_getter("ACHotkey"))
 
-if savedPositionBool: positionBool = tk.BooleanVar(value=True) 
-else: positionBool = tk.BooleanVar(value=False)
-if savedSortBool: sortBool = tk.BooleanVar(value=True)
-else: sortBool = tk.BooleanVar(value=False)
-if savedEZreadBool: ezreadBool = tk.BooleanVar(value=True)
-else: ezreadBool = tk.BooleanVar(value=False)
-if savedJokesBool: jokesBool = tk.BooleanVar(value=True)
-else: jokesBool = tk.BooleanVar(value=False)
-if savedSecretsBool: secretsBool = tk.BooleanVar(value=True)
-else: secretsBool = tk.BooleanVar(value=False)
-if savedBasicBool: basicBool = tk.BooleanVar(value=True)
-else: basicBool = tk.BooleanVar(value=False)
+positionBool = tk.BooleanVar(value=savedPositionBool)
+sortBool = tk.BooleanVar(value=savedSortBool)
+ezreadBool = tk.BooleanVar(value=savedEZreadBool)
+jokesBool = tk.BooleanVar(value=savedJokesBool)
+secretsBool = tk.BooleanVar(value=savedSecretsBool)
+basicBool = tk.BooleanVar(value=savedBasicBool)
+
+
 # ezreadButton = tk.Checkbutton(optionFrame,text="EZRead",variable=ezreadBool,command=update,font=fonty,width=5)
 # ezreadButton.grid(row=11,column=3)
 
@@ -897,4 +858,3 @@ for item in range(len(fonts)):
 # https://www.pythonguis.com/tutorials/packaging-tkinter-applications-windows-pyinstaller/
 
 window.mainloop()
-
